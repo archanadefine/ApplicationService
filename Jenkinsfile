@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     tools {
-        maven 'maven' // Replace with the name of your Maven installation in Jenkins
-        jdk 'jdk-21'         // Replace with the JDK name in Jenkins (can be jdk-17, jdk-8, etc.)
+        maven 'maven'   // Jenkins Maven installation name
+        jdk 'jdk-21'    // Jenkins JDK installation name
     }
 
     environment {
@@ -16,12 +16,24 @@ pipeline {
                 git url: 'https://github.com/archanadefine/ApplicationService.git', branch: 'main'
             }
         }
-
         stage('Build and package') {
             steps {
                 sh 'mvn clean package'
             }
         }
+        stage('Run Tests Pipeline') {
+            steps {
+                script {
+                    echo "Triggering MyGitPipelineJob..."
+                    def result = build job: 'MyGitPipelineJob',
+                                       wait: true,
+                                       propagate: true // fails this job if test job fails
+                    echo "Test pipeline finished successfully."
+                }
+            }
+        }
+
+
 
         stage('Archive Report') {
             steps {
