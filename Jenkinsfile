@@ -24,8 +24,8 @@ pipeline {
         stage('Run Tests Pipeline') {
             steps {
                 script {
-                    echo "Triggering MyGitPipelineJob..."
-                    def result = build job: 'MyGitPipelineJob',
+                    echo "Triggering NaukriJavaProject..."
+                    def result = build job: 'NaukriJavaProject',
                                        wait: true,
                                        propagate: true // fails this job if test job fails
                     echo "Test pipeline finished successfully."
